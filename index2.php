@@ -33,8 +33,9 @@
     // Initialize Dropzone
     const dropzone = new Dropzone("#my-dropzone", {
         url: "upload_new_files.php", // Backend URL for new uploads
-        autoProcessQueue: false,    // Prevent auto-upload
-        addRemoveLinks: true        // Allow file removal
+        autoProcessQueue: false,     // Prevent auto-upload
+        addRemoveLinks: true,        // Allow file removal
+        maxFiles: 10                 // Limit to 10 files
     });
 
     // Add existing files to Dropzone
@@ -42,15 +43,15 @@
         const mockFile = { name: file.name, size: file.size };
 
         // Emit Dropzone events to simulate adding existing files
-        dropzone.emit("addedfile", mockFile);
+        dropzone.emit("addedfile", mockFile); // Add file to Dropzone
         dropzone.emit("thumbnail", mockFile, file.path); // Add thumbnail for images
-        dropzone.emit("complete", mockFile);
+        dropzone.emit("complete", mockFile); // Mark as complete
 
         // Mark as an existing file (custom property)
-        mockFile.existing = true;
-        mockFile.status = Dropzone.SUCCESS;
-        mockFile.path = file.path; // Add the path of the existing file to be used later
-        dropzone.files.push(mockFile);
+        mockFile.existing = true; // Custom property to mark as existing
+        mockFile.status = Dropzone.SUCCESS; // Simulate successful upload
+        mockFile.path = file.path; // Save the file path for server processing
+        dropzone.files.push(mockFile); // Add to Dropzone files array
     });
 
     // Handle the submit button
